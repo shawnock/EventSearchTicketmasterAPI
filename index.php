@@ -278,7 +278,7 @@ elseif(isset($_GET['venueName'])){
 <body onload="init()">
 	<div class = "main">
 		<div class="formcontainer">
-			<form id="myform" action="/event.php" method="POST">
+			<form id="myform" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'])?>" method="POST">
 				<fieldset>
 					<p id = "head"><i>Event Search</i></p>
 					<hr>
@@ -468,6 +468,7 @@ elseif(isset($_GET['venueName'])){
 					text += '</td></tr>';
 					text += '</table>';
 				}
+
 				else{
 					var text = '<table id = "venueTable" border=1 width=100% cellpadding=0 cellspacing=0><tr><td align = "right" width = "20%"><b>Name</b></td><td align = "center">';
 					text += name;
@@ -516,7 +517,7 @@ elseif(isset($_GET['venueName'])){
 					}
 				}
 
-				if(photo == null){
+				if(photo == null || photo.length == 0){
 					var text = '<table id = "photoTable" border=1 width=100% cellpadding=0 cellspacing=0><tr><td align = "center"><b>No Venue Photos Found</b></td></tr></table>';
 				}
 				else{
@@ -540,7 +541,7 @@ elseif(isset($_GET['venueName'])){
 		function getVenueInfo(){
 			var venueNameStr = document.getElementById("hiddenVenue").value;
 			venueNameStr = venueNameStr.replace(/\s/g, "%");
-			var url = 'http://localhost/callTest.php?venueName=';
+			var url = 'http://eventhwshawn-env.fevwmgtumm.us-west-1.elasticbeanstalk.com/index.php?venueName=';
 			url += venueNameStr;
 			var venueRequest = new XMLHttpRequest();
 			venueRequest.open("GET", url, false);
@@ -562,13 +563,12 @@ elseif(isset($_GET['venueName'])){
 			}
 
 			createVenueInfoTable(venueName, venueLat, venueLon, venueAddress, venueCity, postcode, venueUrl);
-			showMap();
 		}
 
 		function getVenuePhoto(){
 			var venueNameStr = document.getElementById("hiddenVenue").value;
 			venueNameStr = venueNameStr.replace(/\s/g, "%");
-			var url = 'http://localhost/callTest.php?venueName=';
+			var url = 'http://eventhwshawn-env.fevwmgtumm.us-west-1.elasticbeanstalk.com/index.php?venueName=';
 			url += venueNameStr;
 			var venueRequest = new XMLHttpRequest();
 			venueRequest.open("GET", url, false);
@@ -645,14 +645,12 @@ elseif(isset($_GET['venueName'])){
 				detailText += '</a>';
 				detailText += '</div>';
 
-				detailText += '<div id="venueSegment">';
 				detailText += '<p id = "venueInfo" align = "center">click to show venue info</p>';
 				detailText += '<img id="arrowDown1" src="http://csci571.com/hw/hw6/images/arrow_down.png" onclick="getVenueInfo()">';
 				detailText += '<div id = "venueContainer"></div>';
 				detailText += '<p id = "venuePhotos" align = "center">click to show venue photos</p>';
 				detailText += '<img id="arrowDown2" src="http://csci571.com/hw/hw6/images/arrow_down.png" onclick="getVenuePhoto()">';
 				detailText += '<div id = "photoContainer"></div>';
-				detailText += '</div>';
 				
 				container.innerHTML = detailText;
 			}
@@ -689,12 +687,12 @@ elseif(isset($_GET['venueName'])){
 				detailText += '</a>';
 				detailText += '</div>';
 
-				detailText += '<div id="venueSegment">';
 				detailText += '<p id="venueInfo" align = "center">click to show venue info</p>';
 				detailText += '<img id="arrowDown1" src="http://csci571.com/hw/hw6/images/arrow_down.png" onclick="getVenueInfo()">';
+				detailText += '<div id="venueContainer"></div>';
 				detailText += '<p id = "venuePhotos" align = "center">click to show venue photos</p>';
 				detailText += '<img id="arrowDown2" src="http://csci571.com/hw/hw6/images/arrow_down.png" onclick="getVenuePhoto()">';
-				detailText += '</div>';
+				detailText += '<div id = "photoContainer"></div>';
 
 				container.innerHTML = detailText;
 			}
@@ -704,7 +702,7 @@ elseif(isset($_GET['venueName'])){
 		function getEventDetails(i){
 			var eventIdNumber = "event" + i;
 			var eventIdSend = document.getElementById(eventIdNumber).innerHTML;
-			var url = 'http://localhost/callTest.php?eventId=';
+			var url = 'http://eventhwshawn-env.fevwmgtumm.us-west-1.elasticbeanstalk.com/index.php?eventId=';
 			url += eventIdSend;
 			var request = new XMLHttpRequest();
 			request.open("GET", url, false);
@@ -901,7 +899,7 @@ elseif(isset($_GET['venueName'])){
 			if(document.getElementById("loccheck").checked){
 				var userLocation = document.getElementById("locname").value;
 				//var inputGather = JSON.stringify({userKeyword,userSelection,userLocation,userRadius});
-				request.open("GET", "http://localhost/callTest.php?keyword="+userKeyword+"&choice="+userSelection+"&userLocation="+userLocation+"&radius="+userRadius, false);
+				request.open("GET", "http://eventhwshawn-env.fevwmgtumm.us-west-1.elasticbeanstalk.com/index.php?keyword="+userKeyword+"&choice="+userSelection+"&userLocation="+userLocation+"&radius="+userRadius, false);
 				request.send();
 				var requestResponse = request.responseText;
 				var responseObj = JSON.parse(requestResponse);
@@ -924,7 +922,7 @@ elseif(isset($_GET['venueName'])){
 				var userLat = currentLat;
 			 	var userLon = currentLon;
 
-				request.open("GET", "http://localhost/callTest.php?keyword="+userKeyword+"&choice="+userSelection+"&lat="+userLat+"&lon="+userLon+"&radius="+userRadius, false);
+				request.open("GET", "http://eventhwshawn-env.fevwmgtumm.us-west-1.elasticbeanstalk.com/index.php?keyword="+userKeyword+"&choice="+userSelection+"&lat="+userLat+"&lon="+userLon+"&radius="+userRadius, false);
 
 				request.send();
 				var requestResponse = request.responseText;
